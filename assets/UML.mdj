@@ -20,6 +20,18 @@
 					"name": "Database",
 					"ownedViews": [
 						{
+							"_type": "RectangleView",
+							"_id": "AAAAAAFx7ex1zwUBgc8=",
+							"_parent": {
+								"$ref": "AAAAAAFx7QjrdT1irJI="
+							},
+							"font": "Arial;13;0",
+							"left": 24,
+							"top": 8,
+							"width": 1104,
+							"height": 704
+						},
+						{
 							"_type": "ERDEntityView",
 							"_id": "AAAAAAFx7Q4grj1x3gA=",
 							"_parent": {
@@ -2136,6 +2148,18 @@
 					},
 					"name": "UseCase",
 					"ownedViews": [
+						{
+							"_type": "RectangleView",
+							"_id": "AAAAAAFx7es4nP9XQx4=",
+							"_parent": {
+								"$ref": "AAAAAAFx7V36iT/yRAk="
+							},
+							"font": "Arial;13;0",
+							"left": 8,
+							"top": 8,
+							"width": 1513,
+							"height": 1097
+						},
 						{
 							"_type": "UMLActorView",
 							"_id": "AAAAAAFx7WRxzz/5sgs=",
