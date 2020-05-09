@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-    <!-- Default config and other properties -->
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    <property name="LOG_FILE" value="logs/spring.log"/>
 
-    <!-- Profile independent loggers -->
-    <logger name="com.luisenricke" level="DEBUG"/>
-    <logger name="org.springframework" level="INFO"/>
+    <property name="LOG_FILE_SPRING" value="spring.log"/>
+    <property name="LOG_PATH" value="logs"/>
 
-    <!-- Development profile -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{dd-MM-yyyy HH:mm:ss} [%thread] %-5level %logger{39}.%M : %msg%n
+            </Pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_TIME" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%clr(${PID:- }) : %thread] %-5level %logger{39}.%M - %msg%n</Pattern>
+            <charset>utf8</charset>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/history/spring_%d{dd-MM-yyyy}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
     <springProfile name="dev">
-        <appender name="APPENDER" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-                <charset>utf8</charset>
-            </encoder>
-        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
 
+        <logger name="com.luisenricke" level="DEBUG"/>
+    </springProfile>
+
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="FILE_TIME"/>
+        </root>
+
+        <logger name="com.luisenricke" level="ERROR"/>
         <logger name="org.springframework.security" level="DEBUG"/>
     </springProfile>
 
-    <!-- Staging/production profile -->
-    <springProfile name="prod">
-        <appender name="APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <encoder>
-                <pattern>${FILE_LOG_PATTERN}</pattern>
-            </encoder>
-            <file>${LOG_FILE}</file>
-            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_FILE}.%d</fileNamePattern>
-                <maxHistory>20</maxHistory>
-            </rollingPolicy>
-        </appender>
-    </springProfile>
-
-    <!-- Root logger -->
-    <root level="INFO">
-        <appender-ref ref="APPENDER"/>
-    </root>
 </configuration>
